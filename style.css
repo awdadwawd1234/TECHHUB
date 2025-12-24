@@ -1,0 +1,163 @@
+:root {
+    --bg-color: #0b1016; /* Snowy Night */
+    --text-color: #f0f0f0;
+    --accent-color: #D42426; /* Christmas Red */
+    --accent-hover: #a81b1d;
+    --secondary-bg: #16202c;
+    --gold: #FFD700;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow: hidden; /* Prevent scrollbars from canvas */
+    position: relative;
+}
+
+#bg-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+.container {
+    text-align: center;
+    padding: 2rem;
+    background-color: rgba(30, 30, 36, 0.85); /* Slightly transparent */
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    max-width: 500px;
+    width: 90%;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    animation: fadeIn 1s ease-out;
+    z-index: 1;
+}
+
+.logo {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%; /* Circular logo */
+    margin-bottom: 1.5rem;
+    filter: drop-shadow(0 0 15px rgba(212, 36, 38, 0.5));
+    border: 3px solid var(--gold);
+}
+
+.christmas-greeting {
+    font-size: 1.5rem;
+    color: var(--gold);
+    margin-bottom: 1rem;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+    animation: pulse 2s infinite;
+}
+
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(45deg, #fff, #D42426, #2DC458);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+p {
+    font-size: 1.1rem;
+    color: #a0a0a0;
+    margin-bottom: 2rem;
+}
+
+.typewriter {
+    font-family: 'Courier New', Courier, monospace;
+    background-color: rgba(0, 0, 0, 0.3);
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 2rem;
+    display: inline-block;
+    border: 1px solid #333;
+    min-width: 200px;
+}
+
+.cursor {
+    display: inline-block;
+    width: 8px;
+    background-color: var(--accent-color);
+    animation: blink 1s infinite;
+}
+
+.discord-btn {
+    display: inline-block;
+    background-color: var(--accent-color);
+    color: white;
+    text-decoration: none;
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(212, 36, 38, 0.4);
+    position: relative;
+    overflow: hidden;
+}
+
+.discord-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: 0.5s;
+}
+
+.discord-btn:hover::before {
+    left: 100%;
+}
+
+.discord-btn:hover {
+    background-color: var(--accent-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(212, 36, 38, 0.6);
+}
+
+footer {
+    margin-top: 3rem;
+    font-size: 0.8rem;
+    color: #555;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.05); opacity: 0.8; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}

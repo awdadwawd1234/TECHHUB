@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechHub</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <canvas id="bg-canvas"></canvas>
+    <div class="container">
+        <header>
+            <img src="logo.png.png" alt="TechHub Logo" class="logo">
+        </header>
+        <main>
+            <h2 class="christmas-greeting">🎄 Wesołych Świąt! 🎄</h2>
+            <h1>Witaj w TechHub</h1>
+            <div class="typewriter">
+                <span id="typewriter-text"></span><span class="cursor">&nbsp;</span>
+            </div>
+            <p>Twoje centrum technologii i innowacji.</p>
+            <a href="https://discord.gg/URB2zC8Jdr" class="discord-btn">Dołącz do serwera discord już dziś</a>
+        </main>
+        <footer>
+            <p>&copy; 2025 TechHub. Wszelkie prawa zastrzeżone.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Snowfall Effect
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const particles = [];
+        const particleCount = 150; // Increased for more snow
+
+        // Forest generation
+        let forest = [];
+        function generateForest() {
+            forest = [];
+            const treeCount = Math.floor(canvas.width / 20); // Dense forest
+            for (let i = 0; i < treeCount; i++) {
+                const height = 40 + Math.random() * 80;
+                const width = 30 + Math.random() * 40;
+                forest.push({
+                    x: Math.random() * canvas.width,
+                    y: canvas.height,
+                    height: height,
+                    width: width,
+                    color: `hsl(120, ${30 + Math.random() * 20}%, ${15 + Math.random() * 15}%)`
+                });
+            }
+            // Sort by y (though y is same) or height to layer properly? 
+            // Actually random order is fine, but larger trees in front would be better if y varied.
+            // Since y is constant (bottom), let's just draw them.
+        }
+        generateForest();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.speed = Math.random() * 1 + 0.5;
+                this.radius = Math.random() * 2 + 1;
+                this.opacity = Math.random() * 0.5 + 0.3;
+            }
+
+            update() {
+                this.y += this.speed;
+                if (this.y > canvas.height) {
+                    this.y = 0;
+                    this.x = Math.random() * canvas.width;
+                }
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < particleCount; i++) {
+            particles.push(new Particle());
+        }
+
+        function drawForest() {
+            forest.forEach(tree => {
+                ctx.fillStyle = tree.color;
+                ctx.beginPath();
+                ctx.moveTo(tree.x - tree.width / 2, tree.y);
+                ctx.lineTo(tree.x + tree.width / 2, tree.y);
+                ctx.lineTo(tree.x, tree.y - tree.height);
+                ctx.closePath();
+                ctx.fill();
+            });
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            drawForest();
+
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            generateForest();
+        });
+
+        // Typewriter Effect
+        const textElement = document.getElementById('typewriter-text');
+        const phrases = [
+            "C:\\TechHub> Wesołych Świąt!",
+            "C:\\TechHub> ho ho ho!",
+            "C:\\TechHub> wbijaj na prezent",
+            "C:\\TechHub> dołącz do społeczności"
+        ];
+        let phraseIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        let typeSpeed = 100;
+
+        function type() {
+            const currentPhrase = phrases[phraseIndex];
+            
+            if (isDeleting) {
+                textElement.textContent = currentPhrase.substring(0, charIndex - 1);
+                charIndex--;
+                typeSpeed = 50;
+            } else {
+                textElement.textContent = currentPhrase.substring(0, charIndex + 1);
+                charIndex++;
+                typeSpeed = 100;
+            }
+
+            if (!isDeleting && charIndex === currentPhrase.length) {
+                isDeleting = true;
+                typeSpeed = 2000; // Pause at end
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                phraseIndex = (phraseIndex + 1) % phrases.length;
+                typeSpeed = 500; // Pause before typing next
+            }
+
+            setTimeout(type, typeSpeed);
+        }
+
+        document.addEventListener('DOMContentLoaded', type);
+    </script>
+</body>
+</html>
